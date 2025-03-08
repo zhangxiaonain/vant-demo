@@ -154,8 +154,8 @@ export default {
 
   
 
-};
-
+}
+}
 
 
 
