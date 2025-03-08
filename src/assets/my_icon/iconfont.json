@@ -1,0 +1,24 @@
+{
+  "id": "",
+  "name": "",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "18166694",
+      "name": "抖音",
+      "font_class": "douyin",
+      "unicode": "e8db",
+      "unicode_decimal": 59611
+      
+    },
+    { 
+    "icon_id": "2506206",
+    "name": "图片上传",
+    "font_class": "tupianshangchuan",
+    "unicode": "e639",
+    "unicode_decimal": 58937
+   }
+  ]
+}

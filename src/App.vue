@@ -1,26 +1,40 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+        <div id = "app1">
+   
+
+          <router-view />
+
+         <van-tabbar class="buttomRoute" route placeholder="true">
+         <van-tabbar-item replace to="/" icon="home-o">推荐</van-tabbar-item>
+         <van-tabbar-item replace to="/shoppingCars" icon="friends-o" badge="5">朋友</van-tabbar-item>
+         <van-tabbar-item replace to="/scan" icon="video-o" >发一发</van-tabbar-item>
+         <van-tabbar-item replace to="/news" icon="chat-o" badge="99+">消息</van-tabbar-item>
+         
+         <van-tabbar-item replace to="/myself" icon="user-o" badge="20">我</van-tabbar-item>
+       
+         </van-tabbar>
+        
+        </div>
+      
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
 
-export default {
-  name: 'App',
-  components: {
-    HelloWorld
-  }
-}
+
+
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+#app1 {
+  /* font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+  -moz-osx-font-smoothing: grayscale; */
+  /* text-align: center; */
+  /* color: #31de87; */
+  /* margin-top: 6px; */
 }
+.buttomRoute{
+  z-index: 6;
+}
+
 </style>

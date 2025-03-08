@@ -1,0 +1,36 @@
+@font-face {
+  font-family: "iconfont"; /* Project id  */
+  src: url('iconfont.ttf?t=1725768028414') format('truetype');
+ 
+  /* 上传图片图标 */
+  /* src: url('uploadPicture.ttf?t=1726459082255') format('truetype'); */
+}
+/*上传图片图标*/
+@font-face {
+   font-family:"iconfont2" ;
+  /* 上传图片图标 */
+  src: url('iconfont2.ttf?t=1726459082255') format('truetype');
+}
+.iconfont {
+  font-family: "iconfont" !important;
+  font-size: 35px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.iconfont2 {
+  font-family: "iconfont2" !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-douyin:before {
+  content: "\e8db";
+}
+/* 图片上传图标*/
+.icon-tupianshangchuan:before {
+  content: "\e639";
+}
+
