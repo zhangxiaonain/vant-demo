@@ -1,7 +1,7 @@
 <template>
    <div>
     <!--引入聊天组件 -->
-    <userChat/>
+    <userMassage/>
 
 
    </div>
@@ -9,12 +9,12 @@
 
 <script>
 //聊天组件
-import  detailChat from '../components/chatCommments/detailChat.vue'; // 确保路径正确
+import  userMassage from '../components/chatCommments/userMessage.vue'; // 确保路径正确
 
 export default {
 
   components: {
-    userChat:detailChat,
+    userMassage:userMassage ,
   },
 
   data() {
