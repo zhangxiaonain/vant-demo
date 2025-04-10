@@ -44,7 +44,7 @@
    v-for="(message, index) in messages"
    :key="index"
     >
- <div class="new-follow-me" @click="clickUserMessage(message)" >
+ <div class="new-follow-me" @click="clickUserMessage(message,sendUserId)" >
         <div class="follomImg">
              <img :src=message.url  class="new-follow-me-img"/>
     
@@ -74,6 +74,7 @@
      </div>
      <!-- 没有更多了 -->
       <div class="no-more-available">
+       
         <span>暂时没有更多了</span>
      </div>
 </div>
@@ -83,22 +84,29 @@
 </template>
 
 <script setup>
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
   import { ref} from  'vue';
+
+  //用户id
+  const sendUserId  = ref(123);
+  const receivedId =ref(null);
   // 定义存储消息的响应式数组
   const messages = ref([
     {id:1,
      url:'https://img0.baidu.com/it/u=3354087818,251408951&fm=253&fmt=auto&app=120&f=JPEG?w=500&h=500',
      userName:'不吃香菜',
-     userId:10,
+     userId:5,
      content:"没有哇",
      lastTime:'2/13',
      unreadCount:0,
     },
  
-      {id:3,
+    {id:3,
      url:'https://img0.baidu.com/it/u=3196617431,1263013381&fm=253&fmt=auto&app=120&f=JPEG?w=500&h=500',
      userName:'南梦',
-     userId:10,
+     userId:4,
      content:"你在干嘛",
      lastTime:'周五',
      unreadCount:10,
@@ -106,7 +114,7 @@
       {id:4,
      url:'https://img2.baidu.com/it/u=1843699844,2479772115&fm=253&fmt=auto&app=120&f=JPEG?w=800&h=800',
      userName:'周兵',
-     userId:10,
+     userId:6,
      content:"完成了",
      lastTime:'周五',
      unreadCount:3,
@@ -114,7 +122,7 @@
       {id:4,
      url:'https://img0.baidu.com/it/u=458707189,148537293&fm=253&fmt=auto&app=120&f=JPEG?w=500&h=500',
      userName:'岗',
-     userId:10,
+     userId:9,
      content:"哈哈哈哈",
      lastTime:'周三',
      unreadCount:3,
@@ -128,7 +136,7 @@
     },  {id:4,
      url:'https://img.rongyuejiaoyu.com/uploads/20240728/02511242750.jpeg',
      userName:'庚寅年',
-     userId:10,
+     userId:18,
      content:"哈哈哈😃",
      lastTime:'周五',
      unreadCount:3,
@@ -138,11 +146,23 @@
 // 定义未读消息数量
 const unreadCount = ref(); // 这里可根据实际情况修改未读消息数量
   // 点击单元格的处理函数
-const clickUserMessage = (message) => {
-  console.log('点击了单元格：', message);
+const clickUserMessage = (message,senderUserId) => {
+ 
+  console.log(senderUserId)
+  // router.push(`/detailChat/${sendUserId.value}/${receivedId.value}`)
+  router.push({
+      path :'/detailChat',
+      query : {
+      senderUserId:senderUserId ,
+      receivedUser: JSON.stringify(message),
+    }
+  }
+  )
+  
   message.unreadCount = 0;
 
 };
+
 
 </script>
 

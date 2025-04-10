@@ -14,7 +14,7 @@ import  userMassage from '../components/chatCommments/userMessage.vue'; // ç¡®ä¿
 export default {
 
   components: {
-    userMassage:userMassage ,
+    userMassage:userMassage,
   },
 
   data() {

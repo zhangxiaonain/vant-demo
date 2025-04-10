@@ -18,7 +18,8 @@ import Scan from '../components/Scan.vue'
 import topRouter from './topbar'
 //sreach
 import searchRouter from './searchs'
-
+//userChar
+import userChat  from './userChat'
 
 
 const routes = [
@@ -34,6 +35,8 @@ const routes = [
   ...topRouter,
   //serach
   ...searchRouter,
+  //userChar
+  ...userChat,
 ]
 
 const router = createRouter({
