@@ -92,14 +92,81 @@
                 </div>
                 <!-- 切换bar -->
                 <div>
-                  <van-tabs v-model="active" swipeable line-height=2 color = red @change="onTabChange">
-                        <van-tab title="作品">
-      
+                  <van-tabs 
+                  v-model="active" swipeable line-height=2 color = red @change="onTabChange">
+                   <van-tab title="作品">
+                     <div class="parent-content">
+                             
+                        <div class="child" v-for="(item,index) in works" :key="index" >
+                           
+                            <img :src="item.imgUrl">
+                            <div class="icon-box">
+                              <van-icon name="like-o" />
+                              {{ item.like }}
+                              
+                            </div>
+                            
+                        </div>
+
+                         
+                       </div>
                    </van-tab>
-                     <van-tab title="私密"></van-tab>
-                     <van-tab title="收藏"></van-tab>
-                     <van-tab title="喜欢"></van-tab>
+                     <van-tab title="私密">
+                      <div class="parent-content">
+                             
+                             <div class="child" v-for="(pwork,index) in privateWork" :key="index" >
+                                
+                                 <img :src="pwork.imgUrl">
+                                 <div class="icon-box">
+                                   <van-icon name="like-o" />
+                                   {{ pwork.like }}
+                                   
+                                 </div>
+                                 
+                             </div>
+     
+                              
+                            </div>
+                      
+                     </van-tab>
+                     <van-tab title="收藏">
+                      <div class="parent-content">
+                             
+                             <div class="child" v-for="(collection,index) in collections" :key="index" >
+                                
+                                 <img :src="collection.imgUrl">
+                                 <div class="icon-box">
+                                   <van-icon name="like-o" />
+                                   {{collection.like }}
+                                   
+                                 </div>
+                                 
+                             </div>
+     
+                              
+                            </div>
+
+
+                     </van-tab>
+                     <van-tab title="喜欢">
+                      <div class="parent-content">
+                             
+                             <div class="child" v-for="(likework,index) in likes" :key="index" >
+                                
+                                 <img :src="likework.imgUrl">
+                                 <div class="icon-box">
+                                   <van-icon name="like-o" />
+                                   {{likework.like }}
+                                   
+                                 </div>
+                                 
+                             </div>
+     
+                              
+                            </div>
+                     </van-tab>
                  </van-tabs>
+                
                  
                 </div>
                 
@@ -125,7 +192,7 @@
 
 
 
-
+<!-- 样式 -->
 <style scoped>
 /* 获取更多 */
 .getMoreContent{
@@ -154,7 +221,8 @@
 .parentBox{
         
         width: 100%;
-        height:676px;
+        /* height:100%; */
+        height: 600px;
         /* padding-top: 50px; */
        
         overflow-y: scroll;
@@ -239,8 +307,9 @@
         background-color: rgb(209, 235, 183); */
 
      }
+     /* 存放作品的盒子 */
      .video{
-         height: 1200px;
+         height: 100%;
          width: 100%;
          border-radius:  20px 20px 0px 0px;
          /* background-color: rgb(250, 248, 248);
@@ -356,20 +425,55 @@
         /* background-color: aqua; */
         color:#aa9697;
     }
+
+    /* 作品展示 */
+    .parent-content{
+      /* width: 200px; */
+      display: flex;
+      flex-wrap: wrap;
+      padding: 2px;
+      gap:2px;
+      /* background: #e2c6c6; */
+    }
+    .child{
+      width:121px;
+      height: 180px;
+      position: relative;
+      /* flex:1; */
+      background: #d49393;
+    }
+    .child img{
+      width: 100%;
+      height: 100%;
+      background: #000;
+    }
+    .child .icon-box{
+      position: absolute;
+      padding: 6px;
+      margin-top: -35px;
+      width: 100%;
+      height: 30px;
+     
+      z-index: 3;
+      font-size: 17px;
+   
+      color: rgb(255, 255, 255);
+    }
     </style>
 
 
-<script>
+<script >
  
   import TopBar from '../components/mySelf_Comments/topBar.vue';
   import pictureComponent from '../components/videoComments/pictureUpload.vue'
   import { Popup } from 'vant';
   import { showToast } from 'vant';
+  import {ref,} from 'vue'
 
 
 export default {
    components: {
-    TopBar,
+      TopBar,
      [Popup.name]: Popup,
    'picture-Component':pictureComponent
   },
@@ -404,7 +508,7 @@ export default {
     console.log('created: 页面挂载前执行的代码');
    
   },
-   
+   //方法
   methods: {
     
      handleUploadSuccess(url) {
@@ -462,33 +566,15 @@ export default {
    gotoLoginPage(){
          this.$router.push('/login');
    },
+   // 初始化激活的标签索引
+   
         //点击上方的bar切换路由
-    onTabChange(index) {
-      //定义变量
-      var routePath;
-      console.log(index);
-      switch (index) {
-        case 0:
-          routePath = "/";
-          break;
-        case 1:
-          routePath = "/follow";
-          break;
-        case 2:
-          routePath = "/cityWide";
-          break;
-        case 3:
-          routePath = "/fineFood";
-          break;
-      } //switch
-
-      this.$router.push(routePath);
-    },
+   
     
   },   
 
-
-data() {
+  //数据
+  data() {
   return {
     //是否显示返回图标
    isShow: false,
@@ -503,10 +589,204 @@ data() {
    showToast:false,
    //获取更多的pupop
    showMoreContent:false,
+   
+  
   };
 },
 
+//vue3
 setup(){
+// 初始化激活的标签索引
+const active = ref(0);
+const  onTabChange=(index) => {
+      active.value = index;
+      console.log('接收到的标签索引:', index);
+      console.log('接收到:', active.value);
+      //定义变量
+      // var routePath;
+      // console.log(index);
+      // switch (index) {
+      //   case 0:
+      //     routePath = "/";
+      //     break;
+      //   case 1:
+      //     routePath = "/follow";
+      //     break;
+      //   case 2:
+      //     routePath = "/cityWide";
+      //     break;
+      //   case 3:
+      //     routePath = "/fineFood";
+      //     break;
+      // } //switch
+
+      // this.$router.push(routePath);
+     
+    }
+   
+    //作品
+    const works = ref([
+      {imgUrl:'https://picsum.photos/181/199 ',
+       like:'123'
+      },
+      {
+        imgUrl:'https://picsum.photos/181/200 ',
+        like:'465'
+      },
+      {
+        imgUrl:'https://picsum.photos/181/201',
+        like:'789'
+      },
+      {
+        imgUrl:'https://picsum.photos/181/202',
+        like:'63'
+      },
+      {
+        imgUrl:'https://picsum.photos/181/203',
+        like:'893'
+      },
+      {
+        imgUrl:'https://picsum.photos/181/204',
+        like:'523'
+      },
+      {
+        imgUrl:'https://picsum.photos/181/205',
+        like:'965'
+      },
+      {
+        imgUrl:'https://picsum.photos/181/206',
+        like:'5623'
+      },
+      {
+        imgUrl:'https://picsum.photos/181/207',
+        like:'33'
+      },
+      {
+        imgUrl:'https://picsum.photos/181/208',
+        like:'45'
+      },
+      {
+        imgUrl:'https://picsum.photos/181/2010',
+        like:'568'
+      },
+
+    ])
+    //私密
+    const privateWork = ref([
+      {imgUrl:'https://picsum.photos/560 ',
+       like:'156'
+      },
+      {
+        imgUrl:'https://pic1.zhimg.com/v2-82aa7168e634225370b6e6d39393d91a_r.jpg?source=2c26e567',
+        like:'5625'
+      },
+      {
+        imgUrl:'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fsafe-img.xhscdn.com%2Fbw1%2Fb2440567-537d-4f81-954b-ac47cc6ffbe8%3FimageView2%2F2%2Fw%2F1080%2Fformat%2Fjpg&refer=http%3A%2F%2Fsafe-img.xhscdn.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1746880390&t=5340ec5205ae6a486a857ef5cda0bb11',
+        like:'789'
+      },
+      {
+        imgUrl:'https://img2.baidu.com/it/u=4277715605,140932347&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=667',
+        like:'523'
+      },
+      {
+        imgUrl:'https://picsum.photos/100',
+        like:'756'
+      },
+        
+
+    ])
+    //收藏collect
+    const collections = ref([
+      {imgUrl:'https://jg-app.obs.cn-north-4.myhuaweicloud.com/prod/upload/0/jpeg/8F1DB896B7DD779702CBEB66C72BC81E.jpeg',
+       like:'156'
+      },
+      {
+        imgUrl:'https://inews.gtimg.com/om_bt/OI-Puir4yj3FZCdWFshc8fdQw-KrFROMimrbGKa5SaVBQAA/641',
+        like:'5625'
+      },
+      {
+        imgUrl:'http://img2.baidu.com/it/u=1461757661,3632831914&fm=253&app=138&f=JPEG?w=800&h=1200 ',
+        like:'789'
+      },
+      {
+        imgUrl:'http://img0.baidu.com/it/u=130245427,4226318965&fm=253&app=138&f=JPEG?w=800&h=1120',
+        like:'523'
+      },
+
+       {
+        imgUrl:'http://img2.baidu.com/it/u=358407797,2124858982&fm=253&app=138&f=JPEG?w=800&h=1200',
+        like:'56万'
+      },
+        {
+        imgUrl:'https://nimg.ws.126.net/?url=http%3A%2F%2Fdingyue.ws.126.net%2F2024%2F0529%2F5811168bj00se8hw2005nd000rs013oc.jpg&thumbnail=660x2147483647&quality=80&type=jpg',
+        like:'523'
+      
+      },
+      {
+        imgUrl:'https://images6.com/video/6e61a91a5fa5722bf4383d160a833143.jpg',
+        like:'13万'
+      },
+        {
+        imgUrl:'https://img2.baidu.com/it/u=3101519302,989451046&fm=253&fmt=auto&app=138&f=JPEG?w=800&h=1120',
+        like:'523'
+      
+      },
+     
+
+    ])
+    //喜欢
+    const likes = ref([
+      {imgUrl:'https://picsum.photos/1710',
+       like:'156'
+      },
+      {
+        imgUrl:'https://picsum.photos/178',
+        like:'5625'
+      },
+      {
+        imgUrl:'https://picsum.photos/153',
+        like:'789'
+      },
+      {
+        imgUrl:'https://picsum.photos/164',
+        like:'5563'
+      },
+      {
+        imgUrl:'https://n.sinaimg.cn/spider20240728/135/w1284h2051/20240728/3521-e02ea61b7a334b90833d9ed05a746854.jpg',
+        like:'5万'
+      },
+      {
+        imgUrl:'https://picsum.photos/184',
+        like:'9653'
+      },
+      {
+        imgUrl:'https://picsum.photos/185',
+        like:'53'
+      },
+      {
+        imgUrl:'https://img0.baidu.com/it/u=1756315936,2205320796&fm=253&fmt=auto&app=138&f=JPEG?w=800&h=1250',
+        like:'68万'
+      
+      }
+
+    ])
+
+
+
+ return{
+      active,
+      onTabChange,
+      //作品
+      works,
+     //私密
+      privateWork,
+     //收藏
+      collections,
+      //喜欢
+      likes,
+
+    }
+  
    
 }
     

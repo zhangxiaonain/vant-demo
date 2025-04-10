@@ -89,7 +89,7 @@ export default {
       // 这里可以添加登录逻辑
       //设置登录过期时间
       //localStorage.clear();
-      setWithTimer('isLoggedIn','true',30000)
+      setWithTimer('isLoggedIn','true',300000)
       console.log(localStorage.getItem('isLoggedIn'));
      
 
