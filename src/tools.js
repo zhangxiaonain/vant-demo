@@ -16,11 +16,14 @@ function timeAgo(timeStr) {
   //设置用户登录的过期时间
   function setWithTimer(key, value, ttl) {
     localStorage.setItem(key, JSON.stringify(value));
+    // localStorage.setItem(userId,JSON.stringify(userId))
     // 设置定时器，到期后删除数据
     setTimeout(() => {
         localStorage.removeItem(key);
     }, ttl);
 }
+
+ 
 
   export{
     timeAgo,

@@ -56,16 +56,18 @@ export default {
 
 
   </div>
+  
 </template>
  
 <style scoped>
   .container1{
     margin: 0 auto;
-   
+      
     height: 610px;
     background: #e9e9e963;
   }
   .upload{
     margin-top: 30px;
+    
   }
 </style>

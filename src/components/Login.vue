@@ -88,9 +88,14 @@ export default {
       console.log('submit', values);
       // 这里可以添加登录逻辑
       //设置登录过期时间
-      //localStorage.clear();
-      setWithTimer('isLoggedIn','true',300000)
-      console.log(localStorage.getItem('isLoggedIn'));
+      //localStorage.clear() isLoggedIn;
+         const userId = 1;
+         const isLoggedIn = 'user_id';
+         const timeToLive = 360000;
+        setWithTimer(isLoggedIn, userId, timeToLive);
+      // setWithTimer('storageKey ','1',300000,'1')
+      // console.log(localStorage.getItem('isLoggedIn'));
+      console.log(localStorage.getItem('user_id'));
      
 
   try {
@@ -107,19 +112,19 @@ export default {
         await new Promise((resolve) => setTimeout(resolve, 2000));
         // 登录成功，关闭提示并添加后续处理逻辑
         // this.$toast.clear();
+        console.log("成功")
         
       } catch (error) {
         // 登录失败，关闭提示并显示错误信息
-        
+        console.log("失败")
        
       } finally {
         // 无论登录成功还是失败，都关闭按钮的加载状态
         this.isLoading = false;
       }
-
     
 
-       this.isLoggedIn = false;
+       //this.isLoggedIn = false;
        this.$router.push('/myself');
     },
     goToRegister() {
@@ -186,7 +191,6 @@ export default {
   margin-left: 10%;
 }
 .van-button{
-
   width: 88%;
   border-radius: 10px;
   color: #ffffff;

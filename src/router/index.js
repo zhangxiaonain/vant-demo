@@ -5,6 +5,8 @@ import Main from '../components/Main.vue'
 import ShoppingCars from '../components/ShoppingCars.vue'
 import News from '../components/News.vue'
 import Myself from '../components/Myself.vue'
+//朋友
+import Friends from '../components/friends.vue'
 //登录
 import Login from '../components/Login.vue'
 //注册
@@ -24,7 +26,7 @@ import userChat  from './userChat'
 
 const routes = [
   { path: '/', component: Main},
-  { path: '/shoppingCars', component:  ShoppingCars},
+  { path: '/friends', component:  Friends},
   { path: '/scan', component:  Scan},
   { path: '/news', component:  News},
   { path: '/myself', component:  Myself},

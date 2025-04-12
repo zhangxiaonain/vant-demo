@@ -88,7 +88,7 @@
                        <li>关注</li></span>
                     <span>13W<br>
                        <li>粉丝</li></span>
-                    <span class="editInformation">编辑资料</span>
+                    <span class="editInformation" @click="editInformation">编辑资料</span>
                 </div>
                 <!-- 切换bar -->
                 <div>
@@ -181,12 +181,69 @@
 
       
    </div>
- 
+  
 <!-- Bgimg -->
  </div>
-    
+  
  <van-toast v-model:show = "showToast" message="登录成功" position="top" />
-   
+ <van-popup class="van-popup" v-model:show="showCenter"   position="bottom"    :style="{ height: '70%' }"  >
+  <van-form @submit="onSubmit"  class="updata-box">
+  <van-cell-group inset>
+    <van-field
+      v-model="username"
+      name="用户名"
+      label="用户名"
+      placeholder="用户名"
+      :rules="[{ required: true, message: '请填写用户名' }]"
+    />
+    <van-field
+      v-model="password"
+     
+      name="简介"
+      label="简介"
+      placeholder="介绍爱好、个性"
+      :rules="[{ required: true, message: '请填写爱好' }]"
+    />
+    <van-field
+      v-model="password"
+    
+      name="性别"
+      label="性别"
+      placeholder="性别"
+      :rules="[{ required: true, message: '请填写性别' }]"
+    />
+    <van-field
+      v-model="password"
+    
+      name="生日"
+      label="生日"
+      placeholder="生日"
+      
+    />
+    <van-field
+      v-model="password"
+    
+      name="学校"
+      label="学校"
+      placeholder="学校"
+     
+    />
+    <van-field
+      v-model="password"
+      name="所在地"
+      label="所在地"
+      placeholder="所在地"
+     
+    />
+  </van-cell-group>
+  <div style="margin: 16px;">
+    <van-button round block type="primary" native-type="submit">
+      修改
+    </van-button>
+  </div>
+</van-form>
+ 
+ </van-popup>
  
 </template>
 
@@ -224,7 +281,7 @@
         /* height:100%; */
         height: 600px;
         /* padding-top: 50px; */
-       
+        
         overflow-y: scroll;
         /* background-color: #aa9697; */
      
@@ -456,9 +513,20 @@
      
       z-index: 3;
       font-size: 17px;
-   
+      
       color: rgb(255, 255, 255);
     }
+    .updata-box{
+      margin-top: 24px;
+      /* width: 90%; */
+      /* margin: auto; */
+      /* border-radius: 12px; */
+      /* background: #e8e8e8; */
+    }
+  
+   .van-popup{
+     /* background: #eeeeee; */
+   }
     </style>
 
 
@@ -482,7 +550,7 @@ export default {
     //清除本地登录状态存储
     // localStorage.clear();
       //判断是否已经登录
-     if (localStorage.getItem('isLoggedIn')) {
+     if (localStorage.getItem('user_id')) {
         // 用户已登录，执行相应操作
       //   showToast({
       //   message: '已登录',
@@ -596,6 +664,8 @@ export default {
 
 //vue3
 setup(){
+//编辑个人信息
+
 // 初始化激活的标签索引
 const active = ref(0);
 const  onTabChange=(index) => {
@@ -623,6 +693,12 @@ const  onTabChange=(index) => {
       // this.$router.push(routePath);
      
     }
+//弹出编辑资料的pup
+const editInformation =()=>{
+     console.log("s"+showCenter.value)
+    showCenter.value = true
+  
+}
    
     //作品
     const works = ref([
@@ -770,8 +846,8 @@ const  onTabChange=(index) => {
       }
 
     ])
-
-
+  //编辑资料
+  const showCenter = ref(false);
 
  return{
       active,
@@ -784,6 +860,10 @@ const  onTabChange=(index) => {
       collections,
       //喜欢
       likes,
+      //编辑资料
+      showCenter,
+      editInformation,
+
 
     }
   

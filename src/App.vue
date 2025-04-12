@@ -6,7 +6,7 @@
 
          <van-tabbar class="buttomRoute" route placeholder="true">
          <van-tabbar-item replace to="/" icon="home-o">推荐</van-tabbar-item>
-         <van-tabbar-item replace to="/shoppingCars" icon="friends-o" badge="5">朋友</van-tabbar-item>
+         <van-tabbar-item replace to="/friends" icon="friends-o" badge="5">朋友</van-tabbar-item>
          <van-tabbar-item replace to="/scan" icon="video-o" >发一发</van-tabbar-item>
          <van-tabbar-item replace to="/news" icon="chat-o" badge="99+">消息</van-tabbar-item>
          
