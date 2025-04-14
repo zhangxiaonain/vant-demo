@@ -1,3 +1,47 @@
+//用户登录
+import {setWithTimer} from "@/tools";
+
+async  function userLogin (userName, password) {
+    try {
+        const response = await fetch(`/api/user/userLogin?userName=${userName}&password=${password}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json"
+            }
+
+
+        })
+        if(!response.ok) {
+            throw new Error(`登录 error! status: ${response.status}`);
+
+
+
+        }
+        const result = await response.json();
+        console.log(result);
+        if (result.code === 200) {
+            console.log('登录成功', result.data);
+            localStorage.setItem('user',JSON.stringify(result.data));
+            localStorage.setItem('user_id',result.data.id);
+
+
+
+            const text =  JSON.parse(localStorage.getItem('user'))
+            console.log("user:----"+ text.id);
+            const isLoggedIn = 'user_id';
+            const timeToLive = 3600000;
+            setWithTimer(isLoggedIn, localStorage.getItem('user_id'), timeToLive);
+
+            return result.data;
+        } else {
+            console.log('登录失败', result.message);
+            return null;
+        }
+    }catch (error) {
+        console.log('登录出错了'+error);
+    }
+}
+
 //用户删除自己的评论
 async function deleteCommentById(id) {
     try {
@@ -21,5 +65,8 @@ async function deleteCommentById(id) {
     }
 }
  export {
-    deleteCommentById,
+     //登录
+     userLogin,
+     //删除评论
+     deleteCommentById,
  }

@@ -28,10 +28,10 @@
               <van-popup class="updatePicPopup" v-model:show="showUploadComponent" position = "bottom"> 
 
                 <div class = "updataPic">
-                     <!-- 关闭图标 -->
+                     <!-- 关闭图标  uploadedPicUrl-->
                    <van-icon class  = "closePic" name="cross"  @click="isShowUploadComponent" />
-                   <img :src="uploadedPicUrl"/>
-                   
+                   <img :src="user.userPicture"/>
+
                 </div>
                 <!--更换组件 -->
                 <div class = "updataContent">
@@ -64,11 +64,11 @@
                   <div class="userPic">
                    
                      <!-- 用户头像 -->
-                    <img :src="uploadedPicUrl"  @click="isShowUploadComponent"/>
+                    <img :src="user.userPicture"  @click="isShowUploadComponent"/>
                   </div>
                     <div class="userName">
-                        张小年<br>
-                        <span class="userAccount">账号：123456789</span>
+                        {{user.userName}}<br>
+                        <span class="userAccount">账号：{{user.account}}</span>
                     </div>
                  
                   
@@ -551,14 +551,17 @@ export default {
     // localStorage.clear();
       //判断是否已经登录
      if (localStorage.getItem('user_id')) {
-        // 用户已登录，执行相应操作
-      //   showToast({
-      //   message: '已登录',
-      //   duration: 3000, // 显示时长，单位为毫秒，这里设置为 3 秒
-      //   icon: 'success', // 显示成功图标
-      //  });
 
       // this.showToast = true;
+       //获取用户信息
+         const userInfo =  JSON.parse(localStorage.getItem('user'))
+          this.user = userInfo;
+
+
+
+
+       console.log("用户Id："+ localStorage.getItem('user_id'))
+
 
       } else {
         // 用户未登录，提示登录
@@ -651,12 +654,28 @@ export default {
    isNewInterview:true,
    isScrolled:false,
    //头像url
-   uploadedPicUrl: 'https://sky-zwx.oss-cn-beijing.aliyuncs.com/3eaec2e0-2999-4212-9f15-89b1fa99cdc3.jpg',
+   //uploadedPicUrl: 'https://sky-zwx.oss-cn-beijing.aliyuncs.com/3eaec2e0-2999-4212-9f15-89b1fa99cdc3.jpg',
    showUploadComponent: false, // 控制图片上传组件的显示与隐藏
    //显示登录成功
    showToast:false,
    //获取更多的pupop
    showMoreContent:false,
+    //user
+    user:{
+      account:'',
+      birthday:'',
+      createdAt:'',
+      id:'',
+      introduce:'',
+      password:'',
+      phone:'',
+      school:'',
+      sex:'',
+      status:'',
+      updatedAt:'',
+      userName:'',
+      userPicture:'',
+    }
    
   
   };

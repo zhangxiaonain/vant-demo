@@ -8,20 +8,20 @@
 
     <van-form @submit="onSubmit">
       <van-field
-        v-model="account"
+        v-model="userName"
        @blur="fetchUserAvatar"
-        name="账号"
-        placeholder="请输入您的账号"
-        :rules="[{ required: true, message: '请填写账号' }]"
+        name="用户名"
+        placeholder="请输入您的用户名"
+        :rules="[{ required: true, message: '请填写用户名', trigger: 'blur' }]"
       />
-      <!-- label="密码" -->
+      <!-- label="密码"  :rules="[{ required: true, message: '请填写密码' }]" -->
       <van-field
-        v-model="password"
+        v-model="passWord"
         type="password"
         name="密码"
         
         placeholder="请输入您的密码"
-        :rules="[{ required: true, message: '请填写密码' }]"
+
       />
       
       <van-checkbox v-model="checked" checked-color="#057df5">已阅读并同意<a href="https://www.jd.com">用户协议</a>和<a href="www.jd.com">隐私政策</a></van-checkbox>
@@ -43,14 +43,15 @@
 import { ref } from "vue";
 import axios from "axios";
 import { showToast,Checkbox,Loading  , Toast } from 'vant';
-  import { setWithTimer } from '../tools';
+import { setWithTimer } from '../tools';
+import {userLogin} from "@/api/user";
 
 
 export default {
   
   data() {
     return {
-      account: '',
+      userName: '',
       password: '',
       avatarUrl:'https://img1.baidu.com/it/u=728383910,3448060628&fm=253&fmt=auto&app=120&f=JPEG?w=800&h=800',
       checked: false,
@@ -64,7 +65,7 @@ export default {
 
      // 当输入框失去焦点时触发该方法
     async fetchUserAvatar() {
-      if (this.account) {
+      if (this.userName) {
         try {
           // 发送请求获取用户头像
           // const response = await axios.get(`/api/getUserAvatar?account=${this.account}`);
@@ -84,19 +85,10 @@ export default {
       
       this.isLoading = true;
 
-       
       console.log('submit', values);
-      // 这里可以添加登录逻辑
+
       //设置登录过期时间
-      //localStorage.clear() isLoggedIn;
-         const userId = 1;
-         const isLoggedIn = 'user_id';
-         const timeToLive = 360000;
-        setWithTimer(isLoggedIn, userId, timeToLive);
-      // setWithTimer('storageKey ','1',300000,'1')
-      // console.log(localStorage.getItem('isLoggedIn'));
-      console.log(localStorage.getItem('user_id'));
-     
+      //localStorage.clear() isLoggedIn
 
   try {
     
@@ -109,10 +101,21 @@ export default {
        return;
       }
         // 模拟登录请求，实际开发中替换为真实接口请求
-        await new Promise((resolve) => setTimeout(resolve, 2000));
+         await new Promise((resolve) => setTimeout(
+
+             resolve, 2000));
         // 登录成功，关闭提示并添加后续处理逻辑
         // this.$toast.clear();
-        console.log("成功")
+       const  res = await   userLogin(this.userName, this.password);
+         console.log('ggg', res);
+
+
+
+
+    console.log( '登录成功用户id:'+ localStorage.getItem('user_id'));
+      this.isLoading = false;
+
+
         
       } catch (error) {
         // 登录失败，关闭提示并显示错误信息
@@ -122,10 +125,11 @@ export default {
         // 无论登录成功还是失败，都关闭按钮的加载状态
         this.isLoading = false;
       }
-    
 
+//跳转至我的页面
+    this.$router.push('/myself');
        //this.isLoggedIn = false;
-       this.$router.push('/myself');
+
     },
     goToRegister() {
     

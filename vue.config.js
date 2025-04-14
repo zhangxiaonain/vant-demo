@@ -16,6 +16,7 @@ module.exports = defineConfig({
 // }
 
   devServer: {
+      //解决跨域问题
     proxy: {
         '/api': {
             target: 'http://localhost:8085/api',
@@ -24,7 +25,7 @@ module.exports = defineConfig({
               '^/api': '' // 路径重写，移除路径中的/api
             }
         }
-    }
+   }
 }
 
 })
