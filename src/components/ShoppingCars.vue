@@ -111,6 +111,7 @@ export default {
     // 在这里可以对接收的 videos 数据进行处理，例如加载视频等操作
     console.log(this.rcomVideos);
     console.log(this.userId)
+     console.log('视频首页')
 
     //改变视频宽高
      // 监听事件

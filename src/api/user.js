@@ -64,9 +64,36 @@ async function deleteCommentById(id) {
         // throw error;
     }
 }
+
+//根据workId查询作品
+async function getWorkById(id) {
+    try {
+        const response = await fetch( `/api/work/selectById?id=${id}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            // body: JSON.stringify({  integer: id })
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        console.log("作品信息："+JSON.stringify(data))
+
+        return data;
+    } catch (error) {
+        console.error('查询作品时出错:', error);
+        // throw error;
+    }
+}
  export {
      //登录
      userLogin,
      //删除评论
      deleteCommentById,
+     //根据id获取作品
+     getWorkById
  }
