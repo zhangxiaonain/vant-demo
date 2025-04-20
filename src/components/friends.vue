@@ -18,16 +18,17 @@
     <div id="containers">
       <!-- 视频 -->
 
-      <div id="video" >
-        <!--  videoUrls 自动播放  -->
+      <div id="video"  >
+        <!--  videoUrls 自动播放   :src="https://sky-zwx.oss-cn-beijing.aliyuncs.com/286f40d9-8083-4e99-acd5-30cbe5b19309.mp4" -->
         <video
-        
+          autoplay
           id="myVideo"
           @click="isPlayVideo"
           ref="videoPlayer"
           width="100%"
           height="500px"
-          src="https://sky-zwx.oss-cn-beijing.aliyuncs.com/286f40d9-8083-4e99-acd5-30cbe5b19309.mp4"
+          :src="work.workUrl"
+
         >
         
         
@@ -38,8 +39,9 @@
       
       <!-- 视频数据区 -->
       <div  class = "">
-      <!-- 用户头像 -->
-      <div id="rightPic">
+      <!-- 用户头像 /optimizeVideo -->
+      <div id="rightPic" >
+         <img  :src=" work.userPicture" @click="gotoPeoplePage" />
         <span id="right-text" v-if="followAuthor" @click="hideSpan">+</span>
       </div>
       <!-- 右侧放置五个图标 -->
@@ -54,7 +56,7 @@
             v-model="Likes"
           />
 
-          {{ Likes }}
+          {{ work.likesCount }}
         </span>
         <!-- 评论 -->
         <span id="chat" @click="clickChat">
@@ -77,7 +79,7 @@
             @click="changeColorStar"
             v-model="Stars"
           />
-          {{ Stars }}
+          {{ work.collection }}
           <!-- 转发 -->
           <!-- aaffdd -->
         </span>
@@ -89,7 +91,7 @@
             id="chat"
             v-model="value"
             @click="showShare = true"
-          />13.5万
+          />{{work.share}}
         </span>
 
         <!--唱片 -->
@@ -107,12 +109,12 @@
       <!-- 首页作者信息 -->
       <div id="authorImformation">
       
-        <span id="authorNameId">@张小年</span>
+        <span id="authorNameId">@{{work.userName}}</span>
         <van-text-ellipsis
           v-model:show="isShowAuthor"
           class="van-theme-light"
           rows="2"
-          :content="text"
+          :content="work.title"
           @click="showAuthorPopup"
           expand-text="展开"
           collapse-text="收起"
@@ -358,14 +360,14 @@
       :style="{ height: '70%' }"
     >
       <div id="authorFirstDiv">
-        <span id="authorPic"></span>
-        <span id="authorName">张小年</span>
+        <img id="authorPic" :src="work.userPicture"/>
+        <span id="authorName">{{work.userName}}</span>
 
         <button id="followAuthor" @click="hideSpan">{{ strfollow }}</button>
       </div>
       <!-- 用户发布的详细信息文本 -->
       <div class="custom-line-spacing">
-        {{ text }}
+        {{ work.title}}
       </div>
       <!-- 发布时间 -->
       <div class="publishTime">1天前</div>
@@ -387,6 +389,11 @@
 .relativeVideo{
   position: relative;
 }
+#video{
+
+  height: 100%;
+}
+
 .publishTime{
   margin-top: 10px;
   margin-left: 10px;
@@ -761,12 +768,19 @@
   
   width: 50px;
   height: 50px;
-  background-image: url("../images/aa.png");
+  //background-image: url("../images/aa.png");
   border-radius: 50%;
   /* pointer-events: none; */
   /*上 右 下 左 */
   margin: 200px 300px 0px 314px;
   text-align: center;
+}
+#rightPic img{
+  z-index: 1;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  //background: #e0e0e0;
 }
 /*#rightPic:last-child {
   
@@ -790,12 +804,12 @@
 
 /**关注加号 */
 #right-text {
-  position: relative;
+  position: absolute;
   /*将span改为行内块元素 */
   display: inline-block;
-  margin-left: 4px;
+  margin-left: -33px;
   margin-top: 41px;
-
+  z-index: 10;
   font-size: 16px;
   width: 17px;
   height: 17px;
@@ -932,15 +946,16 @@
 </style>
 
 <script>
-import { ref,beforeDestroy,mounted } from "vue";
+import { ref } from "vue";
 import axios from "axios";
 
 import { VanTextarea, showToast, showConfirmDialog,showSuccessToast  } from "vant";
 import { timeAgo } from "../tools";
 import  ShoppingCars from './ShoppingCars.vue';
 import {deleteCommentById} from "@/api/user"; // 确保路径正确
-import relativeShows from "../components/videoShowComponents/index.vue";
+import relativeShows from "./videoShowComponents/index.vue";
 
+import {getWorkById} from "@/api/user";
 
 
 export default {
@@ -981,8 +996,19 @@ export default {
       finished: false,
       isLoading :false,
       
-    // 视频的url //作品i  workId: this.workIds,
-      
+    // 视频的url //作品i  workId: this.workIds, https://sky-zwx.oss-cn-beijing.aliyuncs.com/286f40d9-8083-4e99-acd5-30cbe5b19309.mp4
+      work:{
+        userId:'',
+        workUrl:'',
+        userPicture:'',
+        userName:'',
+        share:'',
+        title:'',
+        likesCount:'',
+        commentCount:'',
+        collection:'',
+
+      },
 
       //存放喜欢评论状态的数组
       likes: [],
@@ -1028,7 +1054,7 @@ export default {
 
 
       //activeLike
-      activeLike: null,
+      //activeLike: null,
       //收起子评论
       isPackUp: -1,
       //子评论的Id
@@ -1036,6 +1062,8 @@ export default {
 
       //长按删除评论时间
       pressTimer: null,
+
+
 
     };
   },
@@ -1048,12 +1076,18 @@ export default {
 
     console.log("json->>>>>>" + JSON.parse(localStorage.getItem('user_id')))
 
-    this.$refs.videoPlayer.addEventListener("timeupdate", this.updateProgress);
+    setTimeout(() => {
+      this.$refs.videoPlayer.addEventListener("timeupdate", this.updateProgress);
+    })
     // this.loadComments();
     // this.onLoad();
+    //获取作品
+    this.work.workUrl = 'https://sky-zwx.oss-cn-beijing.aliyuncs.com/716ee973-8157-41c4-a6a1-26aec282e513.mp4'
+    this.getWork();
 
     //分页加载评论数据
     this.fetchComments(this.current, this.size, this.workId);
+
   },
 
   beforeDestroy() {
@@ -1064,6 +1098,23 @@ export default {
   },
   //方法
   methods: {
+
+    //跳转至 个人主页
+    gotoPeoplePage(){
+
+      this.$router.push({ name: 'peoplePage', params: { userId: this.work.userId } });
+    },
+
+    async getWork() {
+      try {
+        // 获取作品
+        this.work   = await getWorkById(1);
+        console.log(this.work)
+
+      } catch (error) {
+        console.error('获取作品信息时出错:', error);
+      }
+    },
     //播放视频 暂停
     isPlayVideo() {
       const video = this.$refs.videoPlayer;
@@ -1075,8 +1126,8 @@ export default {
     },
     //更新进度条
     updateProgress() {
-      const video = this.$refs.videoPlayer;
-      this.progressPercentage = (video.currentTime / video.duration) * 100;
+       //const video = this.$refs.videoPlayer;
+      //this.progressPercentage = (video.currentTime / video.duration) * 100;
     },
     //点击加号后 加号不显示
 
@@ -1115,9 +1166,9 @@ export default {
       this.activeColor = this.activeLike ? "red" : "#ffffff";
 
       if (this.activeLike) {
-        this.Likes++;
+        this.work.likesCount++;
       } else {
-        this.Likes--;
+        this.work.likesCount--;
       }
 
       //截取字符串
@@ -1331,9 +1382,10 @@ export default {
 
       this.activeColorStar = this.activeStar ? "#ffde0a" : "#ffffff";
       if (this.activeStar) {
-        this.Stars++;
+
+        this.work.collection++;
       } else {
-        this.Stars--;
+         this.work.collection--;
       }
     },
     /*搜索 */
@@ -1537,7 +1589,7 @@ export default {
     
     //首页作者信息
     const text =
-      "温暖和爱，让这个世界变得更加美好。哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈";
+      "vvvvv";
 
     //评论弹框
 

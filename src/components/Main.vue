@@ -139,7 +139,7 @@ export default {
 
     //当挂载界面时请求推荐数据
      queryVideoDataByUserId() {
-    axios.get() //  `/api/videos?userId=${this.userId}` 这里的 /api/videos 是假设的后端接口地址，根据实际情况替换，通过查询参数传递用户 Id
+    axios.get('/api/work/selectById?id=1') //  `/api/videos?userId=${this.userId}` 这里的 /api/videos 是假设的后端接口地址，根据实际情况替换，通过查询参数传递用户 Id
      .then(response => {
         this.videoArray = response.data; // 将后端返回的数据赋值给 videoArray，假设后端返回的数据格式符合预期，是包含对象的数组
       })

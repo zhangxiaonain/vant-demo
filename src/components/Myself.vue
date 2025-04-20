@@ -99,7 +99,7 @@
                              
                         <div class="child" v-for="(item,index) in works" :key="index" >
                            
-                            <img :src="item.imgUrl">
+                            <img :src="item.imgUrl"  @click="gotoVideoPlayPage">
                             <div class="icon-box">
                               <van-icon name="like-o" />
                               {{ item.like }}
@@ -116,7 +116,7 @@
                              
                              <div class="child" v-for="(pwork,index) in privateWork" :key="index" >
                                 
-                                 <img :src="pwork.imgUrl">
+                                 <img :src="pwork.imgUrl"  @click="gotoVideoPlayPage">
                                  <div class="icon-box">
                                    <van-icon name="like-o" />
                                    {{ pwork.like }}
@@ -134,7 +134,7 @@
                              
                              <div class="child" v-for="(collection,index) in collections" :key="index" >
                                 
-                                 <img :src="collection.imgUrl">
+                                 <img :src="collection.imgUrl"  @click="gotoVideoPlayPage" >
                                  <div class="icon-box">
                                    <van-icon name="like-o" />
                                    {{collection.like }}
@@ -153,7 +153,7 @@
                              
                              <div class="child" v-for="(likework,index) in likes" :key="index" >
                                 
-                                 <img :src="likework.imgUrl">
+                                 <img :src="likework.imgUrl"  @click="gotoVideoPlayPage">
                                  <div class="icon-box">
                                    <van-icon name="like-o" />
                                    {{likework.like }}
@@ -581,10 +581,14 @@ export default {
   },
    //方法
   methods: {
+    gotoVideoPlayPage(){
+
+      this.$router.push({ name: 'peoplePage', params: { userId: this.user.id} });
+    },
     
      handleUploadSuccess(url) {
-     //获取视频上传成功后的url便于写入数据库
-      this.uploadedPicUrl = url;
+     //获取视频上传成功后的url便于写入数据库 通过子组件 emit 接收值
+       this.user.userPicture = url;
      
     },
     //是否更改头像

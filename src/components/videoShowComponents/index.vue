@@ -1,10 +1,21 @@
+<!--相关推荐-->
 <script>
 
 import {ref} from 'vue'
-
+import { useRouter } from 'vue-router';
 
 export default {
   setup(){
+    const user = ref({
+      id: 1
+    });
+    const router = useRouter();
+    const gotoVideoPlayPage = ()=> {
+
+      router.push({ name: 'peoplePage', params: { userId: user.value.id} });
+    };
+
+
   const relativeVideos = ref([
     {
       imgUrl:'https://picsum.photos/181/139 ',
@@ -25,39 +36,40 @@ export default {
       userName:'凉栀°',
       title:'哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈',
       userPic:'https://img0.baidu.com/it/u=3366098735,2840405048&fm=253&fmt=auto&app=138&f=JPEG?w=380&h=380 ',
-      like:456,
+      like:1220,
     },
     {
       imgUrl:'https://picsum.photos/181/144',
       title:'hhhhh',
       userName:'暗夜行者之光',
       userPic:'https://img2.baidu.com/it/u=3802859213,1629250874&fm=253&fmt=auto&app=120&f=JPEG?w=800&h=800',
-      like:234,
+      like:453,
     },
     {
       imgUrl:'https://picsum.photos/189/210',
       title:'你好',
       userName:'沉蒾那修饰の媄',
       userPic:'https://img2.baidu.com/it/u=1328581174,2485085526&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=608',
-      like:234,
+      like:786,
     },
     {
       imgUrl:'https://picsum.photos/161/166',
       title:'hhhhh',
       userName:'遗忘彼岸',
       userPic:'https://img2.baidu.com/it/u=764799295,4182729913&fm=253&fmt=auto&app=120&f=JPEG?w=500&h=500',
-      like:234,
+      like:1434,
     },  {
       imgUrl:'https://picsum.photos/186/241',
       title:'hhhhh',
       userName:'↑⑤的阳光',
       userPic:'https://picsum.photos/185/240',
-      like:234,
+      like:2304,
     },
   ])
 
   return{
-    relativeVideos
+    relativeVideos,
+    gotoVideoPlayPage
   }
   },
 };
@@ -71,7 +83,7 @@ export default {
            <div class="parent">
           <div class="child" v-for="(relativeVideo,index) in relativeVideos" :key="index" >
                                 
-                      <img class="VideoImg" :src="relativeVideo.imgUrl">
+                      <img class="VideoImg" :src="relativeVideo.imgUrl" @click="gotoVideoPlayPage">
                       <div class="title">
                            {{ relativeVideo.title }}
                       </div>
@@ -139,7 +151,9 @@ export default {
 .child:nth-child(odd) {
     top: -10px;
 }
-
+.icon-box{
+  margin-bottom: 6px;
+}
     
 .title{
    font-size: 16px;

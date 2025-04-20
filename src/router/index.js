@@ -23,6 +23,9 @@ import searchRouter from './searchs'
 //userChar
 import userChat  from './userChat'
 
+// 优化后的video播放
+import optimizeVideo from '../components/optimizeVideoPlay/index.vue'
+
 
 const routes = [
   { path: '/', component: Main},
@@ -32,6 +35,7 @@ const routes = [
   { path: '/myself', component:  Myself},
   { path: '/login', component: Login},
   {path: '/register', component: Register},
+  {path: '/optimizeVideo/:userId',  name: 'peoplePage',component: optimizeVideo},
  
   //topbar的路由
   ...topRouter,
